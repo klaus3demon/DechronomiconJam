@@ -7,7 +7,7 @@ public class ScriptProta : MonoBehaviour {
     public float speed = 0.1f;
     public float rotationSpeed = 100.0F; //Velocidad de rotación
     public float fuerza = 5.0f;
-    ForceMode2D mode = ForceMode2D.Force;
+    //ForceMode2D mode = ForceMode2D.Force;
     public float spacing = 1.0f;
     public Vector3 pos;
     public bool enaire = false;
@@ -28,7 +28,8 @@ public class ScriptProta : MonoBehaviour {
         }
         if (Input.GetKey(KeyCode.A))
         {
-            //GetComponent<MovimientoProtagonista>().andar();
+		;
+			GetComponent<MovimientoProtagonista>().andar();
             if (enaire == false)
             {
                 transform.Translate(0, 0, Input.GetAxis("Vertical") * speed * Time.deltaTime);
@@ -42,6 +43,7 @@ public class ScriptProta : MonoBehaviour {
         }
         if (Input.GetKey(KeyCode.D))
         {
+			GetComponent<MovimientoProtagonista>().andar();
             if (enaire == false)
             {
                 transform.Translate(speed, 0f, 0f);
