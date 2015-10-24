@@ -47,6 +47,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Fran\CargarScene.cs" />
      <Compile Include="Assets\Scripts\Fran\NewBehaviourScript.cs" />
+     <Compile Include="Assets\Scripts\Jaime\Enemy.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
