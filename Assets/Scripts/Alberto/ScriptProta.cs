@@ -11,7 +11,8 @@ public class ScriptProta : MonoBehaviour {
     public float spacing = 1.0f;
     public Vector3 pos;
     public bool enaire = false;
-    public bool direccionderecha = true;
+    public static bool direccionderecha = true;
+    public static int modocombate = 0;
 
     // Use this for initialization
     void Start () {
@@ -31,25 +32,38 @@ public class ScriptProta : MonoBehaviour {
             //GetComponent<MovimientoProtagonista>().andar();
             if (enaire == false)
             {
-                transform.Translate(0, 0, Input.GetAxis("Vertical") * speed * Time.deltaTime);
+                transform.Translate((-speed), 0f, 0f);
+                /*transform.Translate(0, 0, Input.GetAxis("Vertical") * speed * Time.deltaTime);
                 transform.Rotate(0, Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime, 0);
-                Debug.Log(-Input.GetAxis("Horizontal"));
+                Debug.Log(-Input.GetAxis("Horizontal"));*/
+                direccionderecha = false;
             }
             if (enaire == true)
             {
                 transform.Translate((-0.05f), 0f, 0f);
+                direccionderecha = false;
             }
+        }
+        if (Input.GetKeyUp(KeyCode.A))
+        {
+            //GetComponent<MovimientoProtagonista>().noAndar();
         }
         if (Input.GetKey(KeyCode.D))
         {
             if (enaire == false)
             {
                 transform.Translate(speed, 0f, 0f);
+                direccionderecha = true;
             }
             if (enaire == true)
             {
                 transform.Translate(0.05f, 0f, 0f);
+                direccionderecha = true;
             }
+        }
+        if (Input.GetKeyUp(KeyCode.D))
+        {
+            //GetComponent<MovimientoProtagonista>().noAndar();
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
