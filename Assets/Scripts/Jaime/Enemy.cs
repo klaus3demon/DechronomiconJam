@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class Enemy : MonoBehaviour {
-
+    
     public void Start() {
         switch (enemies) {
             case 0: // Elder
@@ -21,15 +21,16 @@ public class Enemy : MonoBehaviour {
     }
 
     public void Update() {
-
+        attack();
     }
 
     private float positionX;
     private float positionY;
-    private GameObject enemyCharacter;
     private float enemyPositionX;
     private float enemyPositionY;
 
+    public GameObject enemyCharacter;
+    public GameObject bullet;
     public int damage;
     public int lives;
     public float attackSpeed;
@@ -71,15 +72,9 @@ public class Enemy : MonoBehaviour {
     }
 
     private void elderAttack() { //(Vector3 posicionObjetivo, float velcidadAtaque, int daño)
-        if ((Mathf.Min(enemyPositionX, positionX) - Mathf.Max(enemyPositionX, positionX)) <= meleScale
-                && enemyPositionY == positionY)
-        {
-            elderMeleAttack();
-        }
-        else
-        {
+
             elderShotAttack();
-        }
+ 
     }
     private void elderMeleAttack()
     {
@@ -88,6 +83,14 @@ public class Enemy : MonoBehaviour {
         //this.GetComponent<AnimacionJuego>().elderMeleAttack();
     }
     private void elderShotAttack() {
+        int delay = 3;
+        delay -= (int)Time.time;
+        if (delay == 0)
+        {
+            Instantiate(bullet, this.transform.localPosition, this.transform.localRotation);
+            delay = 3;
+        }
+        
         int aim = 20;
         attackPositionStrategy(aim);
         //this.GetComponent<AnimacionJuego>().elderShotAttack();
@@ -204,16 +207,16 @@ public class Enemy : MonoBehaviour {
         switch (enemies)
         {
             case 0: // Elder
-                elderInitialization();
+                //elderMove();
                 break;
             case 1: // Adult
-                adultInitialization();
+                //adultMove();
                 break;
             case 2: // Child
-                childInitialization();
+                //childMove();
                 break;
             case 3: // Sperm
-                spermInitialization();
+                //spermMove();
                 break;
         }
         return new ImagePosition();
