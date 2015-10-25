@@ -608,12 +608,12 @@ public class Character : MonoBehaviour
         }
     }
 
-    void decreaseLive()
+    public void vida()
     {
         lifes--;
         if (lifes == 0)
         {
-            // WHAT HAPPEND?
+			Application.LoadLevel("Inicio");
         }
     }
 }
