@@ -20,7 +20,7 @@ public class CargarScene : MonoBehaviour {
 		
 		case "Cassio" : PlayerPrefs.SetInt ("heroe",0);Debug.Log (heroePpal.tag);Application.LoadLevel (scene);break;
 		case "Malvado" :  PlayerPrefs.SetInt ("heroe",1);Debug.Log (heroePpal.tag);Application.LoadLevel (scene);break;
-		case "Arena" : PlayerPrefs.SetInt ("heroe",1);Debug.Log (heroePpal.tag);Application.LoadLevel (scene);break;
+		case "Arena" : PlayerPrefs.SetInt ("heroe",2);Debug.Log (heroePpal.tag);Application.LoadLevel (scene);break;
 		
 		
 		}
