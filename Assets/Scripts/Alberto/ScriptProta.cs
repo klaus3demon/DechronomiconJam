@@ -34,7 +34,8 @@ public class ScriptProta : MonoBehaviour {
         }
         if (Input.GetKey(KeyCode.A))
         {
-			//GetComponent<MovimientoProtagonista>().andar();
+			GetComponent<MovimientoProtagonista>().andar();
+			this.transform.localScale = new Vector3 (-1f,1f,1f);
             if (enaire == false)
             {
                 transform.Translate((-speed), 0f, 0f);
@@ -48,11 +49,12 @@ public class ScriptProta : MonoBehaviour {
         }
         if (Input.GetKeyUp(KeyCode.A))
         {
-            //GetComponent<MovimientoProtagonista>().noAndar();
+            GetComponent<MovimientoProtagonista>().noAndar();
         }
         if (Input.GetKey(KeyCode.D))
         {
-			//GetComponent<MovimientoProtagonista>().andar();
+			GetComponent<MovimientoProtagonista>().andar();
+			this.transform.localScale = new Vector3 (1f,1f,1f);
             if (enaire == false)
             {
                 transform.Translate(speed, 0f, 0f);
@@ -67,7 +69,7 @@ public class ScriptProta : MonoBehaviour {
         //------------- Parar animación de pies al soltar el botón
         if (Input.GetKeyUp(KeyCode.D))
         {
-            //GetComponent<MovimientoProtagonista>().noAndar();
+            GetComponent<MovimientoProtagonista>().noAndar();
         }
         //------------- Atacar con barra espaciadora
         if (Input.GetKeyDown(KeyCode.Space))

@@ -13,11 +13,11 @@ public class MovimientoProtagonista : MonoBehaviour {
 		
 	}
 	public void andar(){
-
+			
 			GetComponent<Animator> ().SetBool ("Move", true);
 	
 	}
-	public void noandes(){
+	public void noAndar(){
 			GetComponent<Animator> ().SetBool ("Move", false);
 		
 	}
