@@ -20,6 +20,7 @@ public class ScriptProta : MonoBehaviour {
     public float delaygolpe = 1.0f;
     public int tiempoborradobala = 5;
     public int tiempoiniciodisparobala = 0;
+    public GameObject dad;
 
     // Use this for initialization
     void Start () {
@@ -97,9 +98,13 @@ public class ScriptProta : MonoBehaviour {
         if (modocombate == 0) {
             if (contadorbalas <= 3) {
                 Vector2 v = this.transform.localPosition;
-                v.x = 0.02f;
-                Instantiate(bala, v, this.transform.localRotation);
+                v.x /= 2;
+                v.x += 0.1f;
+                v.y /= 2;
+                GameObject referencia = Instantiate(bala, v, this.transform.localRotation) as GameObject;
+                referencia.transform.parent = dad.transform;
                 contadorbalas += contadorbalas + 1;
+				GetComponent<AudioSource>().Play();
 
                 if (contadorbalas == 3)
                 {
@@ -124,6 +129,7 @@ public class ScriptProta : MonoBehaviour {
                 Instantiate(bala, v, this.transform.localRotation);
                 contadorespadazos += contadorespadazos + 1;
                 tiempoinicial = Time.time;
+				GetComponent<AudioSource>().Play();
             }
             else
             {    
@@ -142,7 +148,7 @@ public class ScriptProta : MonoBehaviour {
                 v.x = 0.02f;
                 Instantiate(bala, v, this.transform.localRotation);
                 contadorgarrazos += contadorgarrazos + 1;
-
+				GetComponent<AudioSource>().Play();
                 if (contadorgarrazos == 2) {
                     tiempoinicial = Time.time;
                 }       

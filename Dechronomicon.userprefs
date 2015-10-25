@@ -1,15 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Jaime\Character.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Fran\Vidas.cs">
     <Files>
-      <File FileName="Assets\Scripts\Alberto\BalaProta.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Fran\ImagenCentral.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Fran\CargarScene.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Alberto\ScriptProta.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Fran\MovimientoProtagonista.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Fran\Desnegrizador.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Fran\Heroe.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Jaime\Character.cs" Line="273" Column="1" />
+      <File FileName="Assets\Scripts\Fran\Vidas.cs" Line="4" Column="15" />
+      <File FileName="Assets\Scripts\Fran\ColisionBala.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

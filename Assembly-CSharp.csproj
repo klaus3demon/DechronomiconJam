@@ -48,11 +48,15 @@
      <Compile Include="Assets\Scripts\Alberto\BalaProta.cs" />
      <Compile Include="Assets\Scripts\Alberto\ScriptProta.cs" />
      <Compile Include="Assets\Scripts\Fran\CargarScene.cs" />
+     <Compile Include="Assets\Scripts\Fran\Colision Reloj.cs" />
+     <Compile Include="Assets\Scripts\Fran\ColisionBala.cs" />
+     <Compile Include="Assets\Scripts\Fran\ColisionBoss.cs" />
      <Compile Include="Assets\Scripts\Fran\Desnegrizador.cs" />
      <Compile Include="Assets\Scripts\Fran\Heroe.cs" />
      <Compile Include="Assets\Scripts\Fran\ImagenCentral.cs" />
      <Compile Include="Assets\Scripts\Fran\MovimientoProtagonista.cs" />
      <Compile Include="Assets\Scripts\Fran\NewBehaviourScript.cs" />
+     <Compile Include="Assets\Scripts\Fran\Vidas.cs" />
      <Compile Include="Assets\Scripts\Jaime\Character.cs" />
      <Compile Include="Assets\Scripts\Jaime\Projectile.cs" />
  <Reference Include="UnityEngine.UI">
