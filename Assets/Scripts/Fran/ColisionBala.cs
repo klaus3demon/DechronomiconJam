@@ -19,7 +19,7 @@ public class ColisionBala : MonoBehaviour {
 			}
 		}
 		if (amigo) {
-			//GameObject.FindGameObjectWithTag("Enemigo").GetComponent<Character>().vida();
+			GameObject.FindGameObjectWithTag("Enemigo").GetComponent<Character>().vida();
 		}
 	}
 }
