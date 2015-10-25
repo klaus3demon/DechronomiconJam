@@ -55,6 +55,7 @@ public class Character : MonoBehaviour {
                 }
                 count_direction--;
             }
+			GetComponent<MovimientoProtagonista>().andar();
             nextMove = Time.time + moveDelay;
         }
 
