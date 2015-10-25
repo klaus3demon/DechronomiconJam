@@ -226,10 +226,10 @@ public class Character : MonoBehaviour
         projectileObject.transform.parent = dad.transform;
     }
 
+    private int count_jump = 3;
     private void spermAttack()
     { //(Vector3 posicionObjetivo, float velcidadAtaque, int daño)
-        int count_jump = 5;
-
+        Debug.Log(count_jump);
         if (Mathf.Abs((Mathf.Min(this.enemyCharacter.transform.localPosition.x, this.transform.localPosition.x)) -
             Mathf.Abs(Mathf.Max(this.enemyCharacter.transform.localPosition.x, this.transform.localPosition.x)))
             <= meleScale
@@ -239,7 +239,7 @@ public class Character : MonoBehaviour
         }
         else
         {
-            if (count_jump <= 0)
+            if (count_jump == 0)
             {
                 spermJumpAttack();
                 count_jump = 3;
@@ -284,7 +284,7 @@ public class Character : MonoBehaviour
     private void spermJumpAttack()
     {
         //Vector3 backPosition = this.transform.localPosition;
-        this.transform.localPosition = new Vector3 (enemyCharacter.transform.localPosition.x, enemyCharacter.transform.localPosition.y + 8);
+        this.transform.localPosition = new Vector3 (9F, this.transform.localPosition.y + 8, this.transform.localPosition.z);
     }
 
     private Vector3 attackLocationStrategy(int aim)
@@ -344,7 +344,7 @@ public class Character : MonoBehaviour
         {
             count_steps--;
         }
-        Debug.Log(predefinedPath);
+
         switch (predefinedPath)
         {
             case 0:
