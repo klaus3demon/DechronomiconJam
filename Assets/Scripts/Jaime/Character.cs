@@ -52,11 +52,13 @@ public class Character : MonoBehaviour
 
     public GameObject enemyCharacter;
     public GameObject projectile;
+    public GameObject dad;
 
     public int choosenCharacter; //(0 elder, 1 adult, 2 child, 3 sperm)
     public float shotScale = 4F; // Cuando falle el disparo que la bala se aleje del objetivo.
     public float meleScale = 2F; // Distancia máxima para hacer un ataque a melé. 
     public float adjustMoveDistance = 1F;
+    public float lifes = 10;
 
     private void elderInitialization()
     {
@@ -126,10 +128,14 @@ public class Character : MonoBehaviour
         {
             rotation = Quaternion.LookRotation(destine - transform.position, transform.TransformDirection(Vector3.down));
         }
-
+        
         Vector3 origin = this.transform.localPosition; //Hace falta saber de donde sale la bala.
+        origin.x /= 2;
+        origin.y /= 2;
+
         GameObject projectileObject = Instantiate(projectile, origin, new Quaternion(0, 0, rotation.z, rotation.w)) as GameObject;
         projectileObject.GetComponent<Projectile>().Init(destine);
+        projectileObject.transform.parent = dad.transform;
     }
 
     private void adultAttack()
@@ -155,8 +161,25 @@ public class Character : MonoBehaviour
     private void adultShotAttack()
     {
         int aim = 40;
-        attackLocationStrategy(aim);
-        //this.GetComponent<AnimacionJuego>().adultShotAttack();
+        Vector3 destine = attackLocationStrategy(aim); //positionAttack
+
+        Quaternion rotation;
+        if ((destine.x - transform.position.x) >= 0)
+        {
+            rotation = Quaternion.LookRotation(destine - transform.position, transform.TransformDirection(Vector3.up));
+        }
+        else
+        {
+            rotation = Quaternion.LookRotation(destine - transform.position, transform.TransformDirection(Vector3.down));
+        }
+
+        Vector3 origin = this.transform.localPosition; //Hace falta saber de donde sale la bala.
+        origin.x /= 2;
+        origin.y /= 2;
+
+        GameObject projectileObject = Instantiate(projectile, origin, new Quaternion(0, 0, rotation.z, rotation.w)) as GameObject;
+        projectileObject.GetComponent<Projectile>().Init(destine);
+        projectileObject.transform.parent = dad.transform;
     }
 
     private void childAttack()
@@ -182,12 +205,31 @@ public class Character : MonoBehaviour
     private void childShotAttack()
     {
         int aim = 60;
-        attackLocationStrategy(aim);
-        //this.GetComponent<AnimacionJuego>().childShotAttack();
+        Vector3 destine = attackLocationStrategy(aim); //positionAttack
+
+        Quaternion rotation;
+        if ((destine.x - transform.position.x) >= 0)
+        {
+            rotation = Quaternion.LookRotation(destine - transform.position, transform.TransformDirection(Vector3.up));
+        }
+        else
+        {
+            rotation = Quaternion.LookRotation(destine - transform.position, transform.TransformDirection(Vector3.down));
+        }
+
+        Vector3 origin = this.transform.localPosition; //Hace falta saber de donde sale la bala.
+        origin.x /= 2;
+        origin.y /= 2;
+
+        GameObject projectileObject = Instantiate(projectile, origin, new Quaternion(0, 0, rotation.z, rotation.w)) as GameObject;
+        projectileObject.GetComponent<Projectile>().Init(destine);
+        projectileObject.transform.parent = dad.transform;
     }
 
     private void spermAttack()
     { //(Vector3 posicionObjetivo, float velcidadAtaque, int daño)
+        int count_jump = 5;
+
         if (Mathf.Abs((Mathf.Min(this.enemyCharacter.transform.localPosition.x, this.transform.localPosition.x)) -
             Mathf.Abs(Mathf.Max(this.enemyCharacter.transform.localPosition.x, this.transform.localPosition.x)))
             <= meleScale
@@ -197,7 +239,17 @@ public class Character : MonoBehaviour
         }
         else
         {
-            spermShotAttack();
+            if (count_jump <= 0)
+            {
+                spermJumpAttack();
+                count_jump = 3;
+            }
+            else
+            {
+                spermShotAttack();
+                count_jump--;
+            }
+                
         }
     }
     private void spermMeleAttack()
@@ -209,8 +261,30 @@ public class Character : MonoBehaviour
     private void spermShotAttack()
     {
         int aim = 80;
-        attackLocationStrategy(aim);
-        //this.GetComponent<AnimacionJuego>().spermShotAttack();
+        Vector3 destine = attackLocationStrategy(aim); //positionAttack
+
+        Quaternion rotation;
+        if ((destine.x - transform.position.x) >= 0)
+        {
+            rotation = Quaternion.LookRotation(destine - transform.position, transform.TransformDirection(Vector3.up));
+        }
+        else
+        {
+            rotation = Quaternion.LookRotation(destine - transform.position, transform.TransformDirection(Vector3.down));
+        }
+
+        Vector3 origin = this.transform.localPosition; //Hace falta saber de donde sale la bala.
+        origin.x /= 2;
+        origin.y /= 2;
+
+        GameObject projectileObject = Instantiate(projectile, origin, new Quaternion(0, 0, rotation.z, rotation.w)) as GameObject;
+        projectileObject.GetComponent<Projectile>().Init(destine);
+        projectileObject.transform.parent = dad.transform;
+    }
+    private void spermJumpAttack()
+    {
+        //Vector3 backPosition = this.transform.localPosition;
+        this.transform.localPosition = new Vector3 (enemyCharacter.transform.localPosition.x, enemyCharacter.transform.localPosition.y + 8);
     }
 
     private Vector3 attackLocationStrategy(int aim)
@@ -255,7 +329,7 @@ public class Character : MonoBehaviour
     public void move() //Siempre termina mirando a la izquierda
     {
         //En el random se podría tener en cuenta el tipo de character para hacer unos movimientos u otros
-        int randValue = (int)Random.Range(1, 3); //0 goCenter, 1 Predefined1, 2 Predefined2
+        int randValue = (int)Random.Range(1, 4); //0 goCenter, 1 Predefined1, 2 Predefined2
         if (count_steps <= 0)
         {
             if (toCenter == false)
@@ -271,11 +345,11 @@ public class Character : MonoBehaviour
             count_steps--;
         }
         Debug.Log(predefinedPath);
-
         switch (predefinedPath)
         {
             case 0:
-                moveToTheCenter(count_steps);
+                goAutoToTheMid();
+                toCenter = true;
                 break;
             case 1:
                 prefedinedPathOne(count_steps);
@@ -283,7 +357,22 @@ public class Character : MonoBehaviour
             case 2:
                 prefedinedPathTwo(count_steps);
                 break;
+            case 3:
+                goAutoToTheMid();
+                break;
         }
+    }
+
+    bool needGoMid = true;
+    private void goAutoToTheMid()
+    {
+        if (this.transform.localPosition.x > 1)
+            this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+        else if (this.transform.localPosition.x < -1)
+            this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
+
+        if (this.transform.localPosition.x <= 1 && this.transform.localPosition.x >= -1)
+            needGoMid = false;
     }
 
     private void moveToTheCenter(int count_steps)
@@ -331,7 +420,7 @@ public class Character : MonoBehaviour
                 GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 10:
-                this.transform.localScale = -this.transform.localScale;
+                this.transform.localScale.Scale(new Vector3 (-this.transform.localScale.x, this.transform.localScale.y, this.transform.localScale.z) );
                 this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
                 GetComponent<MovimientoProtagonista>().andar();
                 break;
@@ -344,7 +433,7 @@ public class Character : MonoBehaviour
                 GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 13:
-                this.transform.localScale = -this.transform.localScale;
+                this.transform.localScale.Scale(new Vector3(-this.transform.localScale.x, this.transform.localScale.y, this.transform.localScale.z));
                 this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
                 GetComponent<MovimientoProtagonista>().andar();
                 break;
@@ -377,7 +466,7 @@ public class Character : MonoBehaviour
         switch (count_steps)
         {
             case 0:
-                this.transform.localScale = -this.transform.localScale;
+                this.transform.localScale.Scale(new Vector3(-this.transform.localScale.x, this.transform.localScale.y, this.transform.localScale.z)); //Esto no funca
                 this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
                 GetComponent<MovimientoProtagonista>().andar();
                 break;
@@ -514,8 +603,17 @@ public class Character : MonoBehaviour
                 this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
                 break;
             case 19:
-                this.transform.localScale = -this.transform.localScale;
+                this.transform.localScale.Scale(new Vector3(-this.transform.localScale.x, this.transform.localScale.y, this.transform.localScale.z));
                 break;
+        }
+    }
+
+    void decreaseLive()
+    {
+        lifes--;
+        if (lifes == 0)
+        {
+            // WHAT HAPPEND?
         }
     }
 }
