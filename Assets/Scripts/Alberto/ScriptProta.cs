@@ -4,9 +4,9 @@ using System.Collections;
 public class ScriptProta : MonoBehaviour {
     public GameObject player;
     public GameObject bala;
-    public float speed = 0.1f;
+    public float speed = 0.2f;
     public float rotationSpeed = 100.0F; //Velocidad de rotación
-    public float fuerza = 5.0f;
+    public float fuerza = 2000.0f;
     //ForceMode2D mode = ForceMode2D.Force;
     public float spacing = 1.0f;
     public bool enaire = false;
@@ -18,6 +18,8 @@ public class ScriptProta : MonoBehaviour {
     public float tiempoinicial = 0.0f;
     public float delay = 2.0f;
     public float delaygolpe = 1.0f;
+    public int tiempoborradobala = 5;
+    public int tiempoiniciodisparobala = 0;
 
     // Use this for initialization
     void Start () {
@@ -85,7 +87,7 @@ public class ScriptProta : MonoBehaviour {
     //------------- Desactiva las propiedades especiales del personaje al estar en el aire
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.name == "Suelo"){
+        if (collision.collider.tag == "Suelo"){
             enaire = false;
         }
     }
