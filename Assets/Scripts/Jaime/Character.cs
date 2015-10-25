@@ -5,7 +5,7 @@ using System.Threading;
 public class Character : MonoBehaviour
 {
 
-    private float attackDelay;
+    public float attackDelay = 3F; //Cadencia de disparo
     private float nextAtack;
     private float moveDelay;
     private float nextMove;
@@ -26,7 +26,6 @@ public class Character : MonoBehaviour
                 spermInitialization();
                 break;
         }
-        attackDelay = 3F;
         nextAtack = Time.time + attackDelay;
 
         moveDelay = moveSpeed;
@@ -52,14 +51,12 @@ public class Character : MonoBehaviour
     }
 
     public GameObject enemyCharacter;
-
-    public int damage;
-    public int lives;
-    public float attackSpeed;
-    public int choosenCharacter; //(0 elder, 1 adult, 2 child, 3 sperm)
-    private float shotScale = 4F; // Cuando falle el disparo que la bala se aleje del objetivo.
-    private float meleScale = 2F; // Distancia máxima para hacer un ataque a melé. 
     public GameObject projectile;
+
+    public int choosenCharacter; //(0 elder, 1 adult, 2 child, 3 sperm)
+    public float shotScale = 4F; // Cuando falle el disparo que la bala se aleje del objetivo.
+    public float meleScale = 2F; // Distancia máxima para hacer un ataque a melé. 
+    public float adjustMoveDistance = 1F;
 
     private void elderInitialization()
     {
@@ -117,24 +114,21 @@ public class Character : MonoBehaviour
     }
     private void elderShotAttack()
     {
-        int aim = 10;
+        int aim = 20;
         Vector3 destine = attackLocationStrategy(aim); //positionAttack
 
-        Quaternion realRotation;
-
+        Quaternion rotation;
         if ((destine.x - transform.position.x) >= 0)
         {
-            realRotation = Quaternion.LookRotation(destine - transform.position, transform.TransformDirection(Vector3.up));
+            rotation = Quaternion.LookRotation(destine - transform.position, transform.TransformDirection(Vector3.up));
         }
         else
         {
-            realRotation = Quaternion.LookRotation(destine - transform.position, transform.TransformDirection(Vector3.down));
+            rotation = Quaternion.LookRotation(destine - transform.position, transform.TransformDirection(Vector3.down));
         }
 
         Vector3 origin = this.transform.localPosition; //Hace falta saber de donde sale la bala.
-        Quaternion falseRotation = new Quaternion(0F, 0F, 0F, 0F);
-        //Vector3 rotation = attackAngle(origin, destine);
-        GameObject projectileObject = Instantiate(projectile, this.transform.localPosition, new Quaternion(0, 0, realRotation.z, realRotation.w)) as GameObject;
+        GameObject projectileObject = Instantiate(projectile, origin, new Quaternion(0, 0, rotation.z, rotation.w)) as GameObject;
         projectileObject.GetComponent<Projectile>().Init(destine);
     }
 
@@ -258,9 +252,8 @@ public class Character : MonoBehaviour
     private int steps = 20; //4 segundos (moveSpeed 0.20F * 20)
     private int count_steps = 0;
     private bool toCenter = false;
-    public void move()
-    { //0 derecha, 1 izquierda
-
+    public void move() //Siempre termina mirando a la izquierda
+    {
         //En el random se podría tener en cuenta el tipo de character para hacer unos movimientos u otros
         int randValue = (int)Random.Range(1, 3); //0 goCenter, 1 Predefined1, 2 Predefined2
         if (count_steps <= 0)
@@ -298,62 +291,84 @@ public class Character : MonoBehaviour
         switch (count_steps)
         {
             case 0:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 1:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 2:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 3:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 4:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 5:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 6:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 7:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 8:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 9:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 10:
-                this.transform.Translate(moveSpeed, 0f, 0f);
+                this.transform.localScale = -this.transform.localScale;
+                this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 11:
-                this.transform.Translate(moveSpeed, 0f, 0f);
+                this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 12:
-                this.transform.Translate(moveSpeed, 0f, 0f);
+                this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 13:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.localScale = -this.transform.localScale;
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 14:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 15:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 16:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 17:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 18:
+                GetComponent<MovimientoProtagonista>().noAndar();
                 break;
             case 19:
+                GetComponent<MovimientoProtagonista>().noAndar();
                 break;
         }
     }
@@ -362,59 +377,81 @@ public class Character : MonoBehaviour
         switch (count_steps)
         {
             case 0:
-                this.transform.Translate(moveSpeed, 0f, 0f);
+                this.transform.localScale = -this.transform.localScale;
+                this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 1:
-                this.transform.Translate(moveSpeed, 0f, 0f);
+                this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 2:
-                this.transform.Translate(moveSpeed, 0f, 0f);
+                this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 3:
-                this.transform.Translate(moveSpeed, 0f, 0f);
+                this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 4:
-                this.transform.Translate(moveSpeed, 0f, 0f);
+                this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 5:
+                GetComponent<MovimientoProtagonista>().noAndar();
                 break;
             case 6:
+                GetComponent<MovimientoProtagonista>().noAndar();
                 break;
             case 7:
+                GetComponent<MovimientoProtagonista>().noAndar();
                 break;
             case 8:
-                this.transform.Translate(moveSpeed, 0f, 0f);
+                this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 9:
-                this.transform.Translate(moveSpeed, 0f, 0f);
+                this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 10:
-                this.transform.Translate(moveSpeed, 0f, 0f);
+                this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 11:
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().noAndar();
                 break;
             case 12:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 13:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 14:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 15:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 16:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 17:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 18:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
+                GetComponent<MovimientoProtagonista>().andar();
                 break;
             case 19:
+                GetComponent<MovimientoProtagonista>().noAndar();
                 break;
         }
     }
@@ -423,19 +460,19 @@ public class Character : MonoBehaviour
         switch (count_steps)
         {
             case 0:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
                 break;
             case 1:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
                 break;
             case 2:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
                 break;
             case 3:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
                 break;
             case 4:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
                 break;
             case 5:
                 break;
@@ -444,38 +481,40 @@ public class Character : MonoBehaviour
             case 7:
                 break;
             case 8:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
                 break;
             case 9:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
                 break;
             case 10:
-                this.transform.Translate(-moveSpeed, 0f, 0f);
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
                 break;
             case 11:
+                this.transform.Translate(-moveSpeed * adjustMoveDistance, 0f, 0f);
                 break;
             case 12:
-                this.transform.Translate(moveSpeed, 0f, 0f);
+                this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
                 break;
             case 13:
-                this.transform.Translate(moveSpeed, 0f, 0f);
+                this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
                 break;
             case 14:
-                this.transform.Translate(moveSpeed, 0f, 0f);
+                this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
                 break;
             case 15:
-                this.transform.Translate(moveSpeed, 0f, 0f);
+                this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
                 break;
             case 16:
-                this.transform.Translate(moveSpeed, 0f, 0f);
+                this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
                 break;
             case 17:
-                this.transform.Translate(moveSpeed, 0f, 0f);
+                this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
                 break;
             case 18:
-                this.transform.Translate(moveSpeed, 0f, 0f);
+                this.transform.Translate(moveSpeed * adjustMoveDistance, 0f, 0f);
                 break;
             case 19:
+                this.transform.localScale = -this.transform.localScale;
                 break;
         }
     }
