@@ -2,14 +2,17 @@
 using System.Collections;
 using System.Threading;
 
-public class Character : MonoBehaviour {
+public class Character : MonoBehaviour
+{
 
     private float attackDelay;
     private float nextAtack;
     private float moveDelay;
     private float nextMove;
-    public void Start() {
-        switch (choosenCharacter) {
+    public void Start()
+    {
+        switch (choosenCharacter)
+        {
             case 0: // Elder
                 elderInitialization();
                 break;
@@ -26,40 +29,21 @@ public class Character : MonoBehaviour {
         attackDelay = 3F;
         nextAtack = Time.time + attackDelay;
 
-        moveDelay = 0.25F;
+        moveDelay = moveSpeed;
         nextMove = Time.time + moveDelay;
     }
 
-    private float speed = 0.25f;
-    int direction;
-    int count_direction = 0;
-    public void Update() {
+    private float moveSpeed = 0.20F;
+    public void Update()
+    {
 
-        if ( nextMove <= Time.time)
+        if (nextMove <= Time.time)
         {
-            int randValue = (int)Random.Range(0, 2); //0 derecha, 1 izquierda
-            if (count_direction <= 0)
-            {
-                direction = randValue;
-                count_direction = 4;
-            }      
-            else
-            {
-                if (direction == 0)
-                {
-                    move(0);
-                }
-                else
-                {
-                    move(1);
-                }
-                count_direction--;
-            }
-			GetComponent<MovimientoProtagonista>().andar();
+            move();
             nextMove = Time.time + moveDelay;
         }
 
-        if ( nextAtack <= Time.time )
+        if (nextAtack <= Time.time)
         {
             attack();
             nextAtack = Time.time + attackDelay;
@@ -72,22 +56,28 @@ public class Character : MonoBehaviour {
     public int damage;
     public int lives;
     public float attackSpeed;
-    public int choosenCharacter ; //(0 elder, 1 adult, 2 child, 3 sperm)
+    public int choosenCharacter; //(0 elder, 1 adult, 2 child, 3 sperm)
     private float shotScale = 4F; // Cuando falle el disparo que la bala se aleje del objetivo.
     private float meleScale = 2F; // Distancia máxima para hacer un ataque a melé. 
     public GameObject projectile;
 
-    private void elderInitialization() {
+    private void elderInitialization()
+    {
     }
-    private void adultInitialization() {
+    private void adultInitialization()
+    {
     }
-    private void childInitialization() {
+    private void childInitialization()
+    {
     }
-    private void spermInitialization() {
+    private void spermInitialization()
+    {
     }
 
-    public void attack() { //(Vector3 posicionObjetivo, float velcidadAtaque, int daño)
-        switch (choosenCharacter) {
+    public void attack()
+    { //(Vector3 posicionObjetivo, float velcidadAtaque, int daño)
+        switch (choosenCharacter)
+        {
             case 0: // Elder
                 elderAttack();
                 break;
@@ -103,9 +93,10 @@ public class Character : MonoBehaviour {
         }
     }
 
-    private void elderAttack() { //(Vector3 posicionObjetivo, float velcidadAtaque, int daño)
-        if (Mathf.Abs((Mathf.Min(this.enemyCharacter.transform.localPosition.x, this.transform.localPosition.x)) - 
-            Mathf.Abs(Mathf.Max(this.enemyCharacter.transform.localPosition.x, this.transform.localPosition.x))) 
+    private void elderAttack()
+    { //(Vector3 posicionObjetivo, float velcidadAtaque, int daño)
+        if (Mathf.Abs((Mathf.Min(this.enemyCharacter.transform.localPosition.x, this.transform.localPosition.x)) -
+            Mathf.Abs(Mathf.Max(this.enemyCharacter.transform.localPosition.x, this.transform.localPosition.x)))
             <= meleScale
             && this.enemyCharacter.transform.localPosition.y == this.transform.localPosition.y)
         {
@@ -115,7 +106,7 @@ public class Character : MonoBehaviour {
         {
             elderShotAttack();
         }
- 
+
     }
     private void elderMeleAttack()
     {
@@ -131,14 +122,12 @@ public class Character : MonoBehaviour {
 
         Quaternion realRotation;
 
-        if ( (destine.x - transform.position.x) >= 0)
+        if ((destine.x - transform.position.x) >= 0)
         {
-            Debug.Log("Destino positivo");
             realRotation = Quaternion.LookRotation(destine - transform.position, transform.TransformDirection(Vector3.up));
         }
         else
         {
-            Debug.Log("Destino negativo");
             realRotation = Quaternion.LookRotation(destine - transform.position, transform.TransformDirection(Vector3.down));
         }
 
@@ -149,7 +138,8 @@ public class Character : MonoBehaviour {
         projectileObject.GetComponent<Projectile>().Init(destine);
     }
 
-    private void adultAttack() { //(Vector3 posicionObjetivo, float velcidadAtaque, int daño)
+    private void adultAttack()
+    { //(Vector3 posicionObjetivo, float velcidadAtaque, int daño)
         if (Mathf.Abs((Mathf.Min(this.enemyCharacter.transform.localPosition.x, this.transform.localPosition.x)) -
             Mathf.Abs(Mathf.Max(this.enemyCharacter.transform.localPosition.x, this.transform.localPosition.x)))
             <= meleScale
@@ -175,7 +165,8 @@ public class Character : MonoBehaviour {
         //this.GetComponent<AnimacionJuego>().adultShotAttack();
     }
 
-    private void childAttack() { //(Vector3 posicionObjetivo, float velcidadAtaque, int daño)
+    private void childAttack()
+    { //(Vector3 posicionObjetivo, float velcidadAtaque, int daño)
         if (Mathf.Abs((Mathf.Min(this.enemyCharacter.transform.localPosition.x, this.transform.localPosition.x)) -
             Mathf.Abs(Mathf.Max(this.enemyCharacter.transform.localPosition.x, this.transform.localPosition.x)))
             <= meleScale
@@ -201,7 +192,8 @@ public class Character : MonoBehaviour {
         //this.GetComponent<AnimacionJuego>().childShotAttack();
     }
 
-    private void spermAttack() { //(Vector3 posicionObjetivo, float velcidadAtaque, int daño)
+    private void spermAttack()
+    { //(Vector3 posicionObjetivo, float velcidadAtaque, int daño)
         if (Mathf.Abs((Mathf.Min(this.enemyCharacter.transform.localPosition.x, this.transform.localPosition.x)) -
             Mathf.Abs(Mathf.Max(this.enemyCharacter.transform.localPosition.x, this.transform.localPosition.x)))
             <= meleScale
@@ -239,7 +231,6 @@ public class Character : MonoBehaviour {
         else
         {
             randValue = (int)Random.Range(0, 4);
-            Debug.Log(randValue);
             switch (randValue)
             {
                 case 0:
@@ -262,65 +253,230 @@ public class Character : MonoBehaviour {
         }
         return attackLocation;
     }
-    /*
-    public Vector3 attackAngle(Vector3 origin, Vector3 destine)
-    {
-        float angle;
-        Debug.Log(origin.y);
-        if (origin.x >= 0 && origin.y >= 0)
+
+    private int predefinedPath;
+    private int steps = 20; //4 segundos (moveSpeed 0.20F * 20)
+    private int count_steps = 0;
+    private bool toCenter = false;
+    public void move()
+    { //0 derecha, 1 izquierda
+
+        //En el random se podría tener en cuenta el tipo de character para hacer unos movimientos u otros
+        int randValue = (int)Random.Range(1, 3); //0 goCenter, 1 Predefined1, 2 Predefined2
+        if (count_steps <= 0)
         {
-            Debug.Log("+ +");
-            angle = Vector3.Angle(origin, destine);
-            Debug.Log(angle);
-            return new Vector3(0F, 0F, angle);
+            if (toCenter == false)
+                predefinedPath = 0;
+            else
+            {
+                predefinedPath = randValue;
+            }
+            count_steps = steps;
         }
-        else if (origin.x < 0 && origin.y >= 0)
+        else
         {
-            Debug.Log("- +");
-            angle = Vector3.Angle(origin, destine);
-            Debug.Log(angle);
-            return new Vector3(0F, 180F, angle);
+            count_steps--;
         }
-        else if (origin.x < 0 && origin.y < 0)
+        Debug.Log(predefinedPath);
+
+        switch (predefinedPath)
         {
-            Debug.Log("- -");
-            angle = Vector3.Angle(origin, destine);
-            Debug.Log(angle);
-            return new Vector3(0F, 180F, angle);
-        }
-        else // (origin.x >= 0 && origin.y < 0)
-        {
-            Debug.Log("+ -");
-            angle = Vector3.Angle(origin, destine);
-            Debug.Log(angle);
-            return new Vector3(0F, 0F, angle);
-        }
-        
-    }
-    */
-    public void move(int direction) { //0 derecha, 1 izquierda
-        switch (choosenCharacter)
-        {
-            case 0: // Elder
-                elderMove(direction);
+            case 0:
+                moveToTheCenter(count_steps);
                 break;
-            case 1: // Adult
-                //adultMove();
+            case 1:
+                prefedinedPathOne(count_steps);
                 break;
-            case 2: // Child
-                //childMove();
-                break;
-            case 3: // Sperm
-                //spermMove();
+            case 2:
+                prefedinedPathTwo(count_steps);
                 break;
         }
     }
 
-    public void elderMove(int direction)
+    private void moveToTheCenter(int count_steps)
     {
-        if (direction == 0)
-            this.transform.Translate(speed, 0f, 0f);
-        else
-            this.transform.Translate(-speed, 0f, 0f);
+        switch (count_steps)
+        {
+            case 0:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 1:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 2:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 3:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 4:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 5:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 6:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 7:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 8:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 9:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 10:
+                this.transform.Translate(moveSpeed, 0f, 0f);
+                break;
+            case 11:
+                this.transform.Translate(moveSpeed, 0f, 0f);
+                break;
+            case 12:
+                this.transform.Translate(moveSpeed, 0f, 0f);
+                break;
+            case 13:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 14:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 15:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 16:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 17:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 18:
+                break;
+            case 19:
+                break;
+        }
+    }
+    private void prefedinedPathOne(int count_steps)
+    {
+        switch (count_steps)
+        {
+            case 0:
+                this.transform.Translate(moveSpeed, 0f, 0f);
+                break;
+            case 1:
+                this.transform.Translate(moveSpeed, 0f, 0f);
+                break;
+            case 2:
+                this.transform.Translate(moveSpeed, 0f, 0f);
+                break;
+            case 3:
+                this.transform.Translate(moveSpeed, 0f, 0f);
+                break;
+            case 4:
+                this.transform.Translate(moveSpeed, 0f, 0f);
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                this.transform.Translate(moveSpeed, 0f, 0f);
+                break;
+            case 9:
+                this.transform.Translate(moveSpeed, 0f, 0f);
+                break;
+            case 10:
+                this.transform.Translate(moveSpeed, 0f, 0f);
+                break;
+            case 11:
+                break;
+            case 12:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 13:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 14:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 15:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 16:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 17:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 18:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 19:
+                break;
+        }
+    }
+    private void prefedinedPathTwo(int count_steps)
+    {
+        switch (count_steps)
+        {
+            case 0:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 1:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 2:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 3:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 4:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 9:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 10:
+                this.transform.Translate(-moveSpeed, 0f, 0f);
+                break;
+            case 11:
+                break;
+            case 12:
+                this.transform.Translate(moveSpeed, 0f, 0f);
+                break;
+            case 13:
+                this.transform.Translate(moveSpeed, 0f, 0f);
+                break;
+            case 14:
+                this.transform.Translate(moveSpeed, 0f, 0f);
+                break;
+            case 15:
+                this.transform.Translate(moveSpeed, 0f, 0f);
+                break;
+            case 16:
+                this.transform.Translate(moveSpeed, 0f, 0f);
+                break;
+            case 17:
+                this.transform.Translate(moveSpeed, 0f, 0f);
+                break;
+            case 18:
+                this.transform.Translate(moveSpeed, 0f, 0f);
+                break;
+            case 19:
+                break;
+        }
     }
 }

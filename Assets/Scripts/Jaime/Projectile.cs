@@ -15,10 +15,10 @@ public class Projectile : MonoBehaviour
     void Update()
     {
         this.transform.Translate(Vector3.right);
-        if ( (creationTime + secondsLife) <= Time.time)
+        if ((creationTime + secondsLife) <= Time.time)
             Destroy(this.gameObject);
     }
-    
+
     private Vector3 destine;
     //private Vector3 rotation;
     public void Init(Vector3 destine)
