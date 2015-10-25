@@ -9,10 +9,15 @@ public class ScriptProta : MonoBehaviour {
     public float fuerza = 5.0f;
     //ForceMode2D mode = ForceMode2D.Force;
     public float spacing = 1.0f;
-    public Vector3 pos;
     public bool enaire = false;
     public static bool direccionderecha = true;
     public static int modocombate = 0;
+    public static int contadorbalas = 0;
+    public static int contadorespadazos = 0;
+    public static int contadorgarrazos = 0;
+    public float tiempoinicial = 0.0f;
+    public float delay = 2.0f;
+    public float delaygolpe = 1.0f;
 
     // Use this for initialization
     void Start () {
@@ -29,14 +34,10 @@ public class ScriptProta : MonoBehaviour {
         }
         if (Input.GetKey(KeyCode.A))
         {
-		;
-			GetComponent<MovimientoProtagonista>().andar();
+			//GetComponent<MovimientoProtagonista>().andar();
             if (enaire == false)
             {
                 transform.Translate((-speed), 0f, 0f);
-                /*transform.Translate(0, 0, Input.GetAxis("Vertical") * speed * Time.deltaTime);
-                transform.Rotate(0, Input.GetAxis("Horizontal") * rotationSpeed * Time.deltaTime, 0);
-                Debug.Log(-Input.GetAxis("Horizontal"));*/
                 direccionderecha = false;
             }
             if (enaire == true)
@@ -51,7 +52,7 @@ public class ScriptProta : MonoBehaviour {
         }
         if (Input.GetKey(KeyCode.D))
         {
-			GetComponent<MovimientoProtagonista>().andar();
+			//GetComponent<MovimientoProtagonista>().andar();
             if (enaire == false)
             {
                 transform.Translate(speed, 0f, 0f);
@@ -63,13 +64,15 @@ public class ScriptProta : MonoBehaviour {
                 direccionderecha = true;
             }
         }
+        //------------- Parar animación de pies al soltar el botón
         if (Input.GetKeyUp(KeyCode.D))
         {
             //GetComponent<MovimientoProtagonista>().noAndar();
         }
+        //------------- Atacar con barra espaciadora
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            cronosShotAttack();
+            cronosAttack();
         }
         //---------------------- Codigo para que el disparo sea láser dejando pulsado clic
         /*if (Input.GetKey(KeyCode.Mouse0))
@@ -77,14 +80,76 @@ public class ScriptProta : MonoBehaviour {
             cronosShotAttack();
         }*/
     }
+    //------------- Desactiva las propiedades especiales del personaje al estar en el aire
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.name == "Suelo"){
             enaire = false;
         }
     }
-    private void cronosShotAttack()
+    private void cronosAttack()
     {
-        Instantiate(bala, this.transform.localPosition, this.transform.localRotation);
+        //------------- Modo combate disparos
+        if (modocombate == 0) {
+            if (contadorbalas <= 3) {
+                Vector2 v = this.transform.localPosition;
+                v.x = 0.02f;
+                Instantiate(bala, v, this.transform.localRotation);
+                contadorbalas += contadorbalas + 1;
+
+                if (contadorbalas == 3)
+                {
+                    tiempoinicial = Time.time;
+                }
+            }
+            else
+            {
+                if (Time.time >= tiempoinicial + delay)
+                {
+                    contadorbalas = 0;
+                }
+            }
+        }
+        //------------- Modo combate espada
+        if (modocombate == 1)
+        {
+            if (contadorespadazos != 1)
+            {
+                Vector2 v = this.transform.localPosition;
+                v.x = 0.02f;
+                Instantiate(bala, v, this.transform.localRotation);
+                contadorespadazos += contadorespadazos + 1;
+                tiempoinicial = Time.time;
+            }
+            else
+            {    
+                if (Time.time >= tiempoinicial + delaygolpe)
+                {
+                    contadorespadazos = 0;
+                }
+            }
+        }
+        //------------- Modo combate garrazos
+        if (modocombate == 2)
+        {
+            if (contadorgarrazos < 2)
+            {
+                Vector2 v = this.transform.localPosition;
+                v.x = 0.02f;
+                Instantiate(bala, v, this.transform.localRotation);
+                contadorgarrazos += contadorgarrazos + 1;
+
+                if (contadorgarrazos == 2) {
+                    tiempoinicial = Time.time;
+                }       
+            }
+            else
+            {
+                if (Time.time >= tiempoinicial + delaygolpe)
+                {
+                    contadorgarrazos = 0;
+                }
+            }
+        }
     }
 }
